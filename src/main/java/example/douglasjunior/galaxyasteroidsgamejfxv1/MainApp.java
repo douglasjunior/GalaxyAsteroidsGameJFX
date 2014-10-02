@@ -1,9 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package transitiontimelinetests;
+package example.douglasjunior.galaxyasteroidsgamejfxv1;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -14,9 +9,12 @@ import java.util.TimerTask;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
+import static javafx.application.Application.launch;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -29,11 +27,7 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import javafx.util.Duration;
 
-/**
- *
- * @author Douglas
- */
-public class TransitionTimelineTests extends Application {
+public class MainApp extends Application {
 
     private static final Double SCREEN_WIDTH = 800.0;
     private static final Double SCREEN_HEIGHT = 600.0;
@@ -58,9 +52,9 @@ public class TransitionTimelineTests extends Application {
 
     private Timeline gameLoop;
 
-    private final Image img1 = new Image("/transitiontimelinetests/rock1.png");
-    private final Image img2 = new Image("/transitiontimelinetests/rock2.png");
-    private final Image img3 = new Image("/transitiontimelinetests/rock3.png");
+    private final Image img1 = new Image("/drawable/rock1.png");
+    private final Image img2 = new Image("/drawable/rock2.png");
+    private final Image img3 = new Image("/drawable/rock3.png");
 
     private Integer dropBullet = 0;
     private Integer dropAsteroid = 0;
@@ -122,7 +116,7 @@ public class TransitionTimelineTests extends Application {
         stage.setWidth(SCREEN_WIDTH);
         stage.setHeight(SCREEN_HEIGHT);
 
-        ship = new ImageView("/transitiontimelinetests/ship.png");
+        ship = new ImageView("/drawable/ship.png");
         scenario.getChildren().add(ship);
 
         ship.setX(stage.getWidth() / 2 - ship.getImage().getWidth() / 2);
@@ -302,10 +296,10 @@ public class TransitionTimelineTests extends Application {
                         scenario.getChildren().remove(a);
 
                         if (a.getImage().getWidth() > 60) {
-                            ImageView a1 = new ImageView("/transitiontimelinetests/rock1.png");
+                            ImageView a1 = new ImageView(img1);
                             a1.setX(a.getX() - 20);
                             a1.setY(a.getY());
-                            ImageView a2 = new ImageView("/transitiontimelinetests/rock1.png");
+                            ImageView a2 = new ImageView(img1);
                             a2.setX(a.getX() + 20);
                             a2.setY(a.getY());
 
