@@ -1,31 +1,37 @@
 package example.douglasjunior.galaxyasteroidsgamejfxv1;
 
+import static com.sun.javafx.perf.PerformanceTracker.getSceneTracker;
+import static java.lang.System.exit;
+import static java.lang.System.out;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
+import static javafx.animation.Animation.INDEFINITE;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
-import javafx.application.Platform;
+import static javafx.application.Platform.exit;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyCode;
+import static javafx.scene.input.KeyCode.ESCAPE;
+import static javafx.scene.input.KeyCode.LEFT;
+import static javafx.scene.input.KeyCode.RIGHT;
+import static javafx.scene.input.KeyCode.SPACE;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
+import static javafx.scene.paint.Color.YELLOWGREEN;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import javafx.util.Duration;
+import static javafx.util.Duration.millis;
 
 public class MainApp extends Application {
 
@@ -68,13 +74,9 @@ public class MainApp extends Application {
 
     @Override
     public void start(Stage stage) {
-        stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-
-            @Override
-            public void handle(WindowEvent event) {
-                Platform.exit();
-                System.exit(0);
-            }
+        stage.setOnCloseRequest((WindowEvent event) -> {
+            exit();
+            exit(0);
         });
 
         scenario = new Pane();
@@ -82,32 +84,25 @@ public class MainApp extends Application {
         scenario.setStyle("-fx-background-color: rgb(10,10,50);");
         scenario.setFocusTraversable(true);
 
-        scenario.setOnKeyPressed(new EventHandler<KeyEvent>() {
-
-            @Override
-            public void handle(KeyEvent event) {
-                if (event.getCode() == KeyCode.LEFT) {
-                    keyLeft = true;
-                } else if (event.getCode() == KeyCode.RIGHT) {
-                    keyRight = true;
-                } else if (event.getCode() == KeyCode.SPACE) {
-                    keySpace = true;
-                } else if (event.getCode() == KeyCode.ESCAPE) {
-                    Platform.exit();
-                    System.exit(0);
-                }
+        scenario.setOnKeyPressed((KeyEvent event) -> {
+            if (event.getCode() == LEFT) {
+                keyLeft = true;
+            } else if (event.getCode() == RIGHT) {
+                keyRight = true;
+            } else if (event.getCode() == SPACE) {
+                keySpace = true;
+            } else if (event.getCode() == ESCAPE) {
+                exit();
+                exit(0);
             }
         });
-        scenario.setOnKeyReleased(new EventHandler<KeyEvent>() {
-            @Override
-            public void handle(KeyEvent event) {
-                if (event.getCode() == KeyCode.LEFT) {
-                    keyLeft = false;
-                } else if (event.getCode() == KeyCode.RIGHT) {
-                    keyRight = false;
-                } else if (event.getCode() == KeyCode.SPACE) {
-                    keySpace = false;
-                }
+        scenario.setOnKeyReleased((KeyEvent event) -> {
+            if (event.getCode() == LEFT) {
+                keyLeft = false;
+            } else if (event.getCode() == RIGHT) {
+                keyRight = false;
+            } else if (event.getCode() == SPACE) {
+                keySpace = false;
             }
         });
 
@@ -123,7 +118,7 @@ public class MainApp extends Application {
         ship.setY(stage.getHeight() - ship.getImage().getHeight() * 2);
 
         for (int i = 0; i < 20; i++) {
-            Rectangle b = new Rectangle(5, 20, Color.YELLOWGREEN);
+            Rectangle b = new Rectangle(5, 20, YELLOWGREEN);
             b.setVisible(false);
             b.setCache(true);
             bullets.add(b);
@@ -131,19 +126,15 @@ public class MainApp extends Application {
 
         //create a timeline for moving the circle
         gameLoop = new Timeline();
-        gameLoop.setCycleCount(Timeline.INDEFINITE);
+        gameLoop.setCycleCount(INDEFINITE);
         gameLoop.setAutoReverse(true);
 
         //create a keyFrame, the keyValue is reached at time 2s
-        Duration duration = Duration.millis(10);
+        Duration duration = millis(10);
         //one can add a specific action when the keyframe is reached
 
-        EventHandler onFinished = new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent t) {
-                updateGame();
-            }
-
+        EventHandler onFinished = (EventHandler<ActionEvent>) (ActionEvent t) -> {
+            updateGame();
         };
 
         KeyFrame keyFrame = new KeyFrame(duration, onFinished);
@@ -161,7 +152,7 @@ public class MainApp extends Application {
 
             @Override
             public void run() {
-                System.out.println("FPS " + com.sun.javafx.perf.PerformanceTracker.getSceneTracker(stage.getScene()).getInstantFPS());
+                out.println("FPS " + getSceneTracker(stage.getScene()).getInstantFPS());
             }
         }, 0, 1000);
     }
